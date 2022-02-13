@@ -1,0 +1,52 @@
+{
+  "name": "登录测试",
+  "clientOptions": {
+    "headless": false,
+    "defaultViewport": {
+      "width": 1536,
+      "height": 721
+    }
+  },
+  "steps": [{
+      "name": "打开页面",
+      "type": "open_page",
+      "href": "https://passport-pbsp-test.myysq.com.cn/auth/login"
+    },
+    {
+      "name": "输入企业号",
+      "type": "input",
+      "target": "#enterprise",
+      "text": "ywycwcg"
+    },
+    {
+      "name": "输入账号",
+      "type": "input",
+      "target": "#user_name",
+      "text": "ywycwcg"
+    },
+    {
+      "name": "输入密码",
+      "type": "input",
+      "target": "#password",
+      "text": "ywycwcg"
+    }, {
+      "name": "截图-登录前",
+      "type": "screenshot",
+      "target": "body"
+    }, {
+      "name": "点击登录",
+      "type": "click_element",
+      "target": "#password",
+      "text": "ywycwcg",
+      "navigation": true
+    }, {
+      "name": "等待",
+      "type": "waitFor",
+      "time": 800
+    }, {
+      "name": "截图-登录后",
+      "type": "screenshot",
+      "target": "body"
+    }
+  ]
+}
