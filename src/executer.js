@@ -1,6 +1,7 @@
 const tempJSON = require("../template.json");
 const puppeteer = require('puppeteer');
 const path = require("path");
+const fs = require("fs");
 
 class Executer {
 
@@ -28,7 +29,7 @@ class Executer {
     if(!el){
       throw new Error("找不到对应元素!");
     }
-    el.type(step.text || "");
+    await el.type(step.text || "");
   }
 
   async screenshotExecute(step){
@@ -39,43 +40,71 @@ class Executer {
     if(!screenElement){
       throw new Error("找不到对应元素!");
     }
+
+    const imgDirPath = path.resolve(__dirname, '../images', "20220213-hash1234");
+    if(!fs.existsSync(imgDirPath)){
+      fs.mkdirSync(imgDirPath);
+    }
     await screenElement.screenshot({
-      path: path.resolve(__dirname, '../images', "20220213-nakdji1as", step.name+'.png')
-  });
+      path: path.resolve(imgDirPath, step.name+'.png')
+    });
+  }
+
+  async clickElementExcute(step){
+    if(!step.target){
+      throw new Error("target(目标)不能为空!");
+    }
+    const el = await this._page.$(step.target);
+    await el.click();
+
+    if(step.navigation){
+          await this._page.waitForNavigation();
+    }
+  }
+
+  async waitForExcute(step) {
+    await this._page.waitForTimeout(step.time);
+  }
+  async hoverElementExcute(step) {
+    if(!step.target){
+      throw new Error("target(目标)不能为空!");
+    }
+    const el = await this._page.$(step.target);
+    el.hover();
   }
 
   async executeReal(step) {
     switch (step.type) {
       case "open_page":
-        await openExecute(step);
+        await this.openExecute(step);
         break;
       case "input":
-        await inputExecute(step);
+        await this.inputExecute(step);
         break;
       case "screenshot":
-        await screenshotExecute(step);
+        await this.screenshotExecute(step);
         break;
-        // TODO {yizy} 继续写剩下的事件
       case "click_element":
-        await openExecute(step);
+        await this.clickElementExcute(step);
         break;
       case "waitFor":
-        await openExecute(step);
+        await this.waitForExcute(step);
         break;
       case "hover_element":
-        await openExecute(step);
+        await this.hoverElementExcute(step);
         break;
 
       default:
         break;
     }
+    console.log(step.name, '执行完毕')
   }
 
   async execute() {
     const {
       steps, clientOptions
     } = tempJSON;
-    
+
     const browser = await puppeteer.launch({
       headless: clientOptions.headless,
       defaultViewport: clientOptions.defaultViewport
@@ -89,8 +118,13 @@ class Executer {
       try {
         await this.executeReal(thisStep);
       } catch (err) {
-        throw new Error({step: i, err:err});
+        console.log(err);
+        throw new Error(JSON.stringify({step: i, err:err.message}));
       }
     }
   }
+}
+
+module.exports = {
+  Executer
 }

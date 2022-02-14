@@ -28,11 +28,11 @@
       "name": "输入密码",
       "type": "input",
       "target": "#password",
-      "text": "ywycwcg"
+      "text": "sh123456"
     }, {
       "name": "截图-登录前",
       "type": "screenshot",
-      "target": "body"
+      "target": ""
     }, {
       "name": "点击登录",
       "type": "click_element",
@@ -46,7 +46,7 @@
     }, {
       "name": "截图-登录后",
       "type": "screenshot",
-      "target": "body"
+      "target": ""
     }
   ]
 }
