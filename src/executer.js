@@ -58,7 +58,7 @@ class Executer {
     await el.click();
 
     if(step.navigation){
-          await this._page.waitForNavigation();
+        await this._page.waitForNavigation();
     }
   }
 

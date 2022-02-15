@@ -36,7 +36,7 @@
     }, {
       "name": "点击登录",
       "type": "click_element",
-      "target": "#password",
+      "target": "#login_btn",
       "text": "ywycwcg",
       "navigation": true
     }, {
