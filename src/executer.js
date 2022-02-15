@@ -32,7 +32,7 @@ class Executer {
     await el.type(step.text || "");
   }
 
-  async screenshotExecute(step){
+  async screenshotExecute(step, name){
     let screenElement = this._page;
     if(step.target){
       screenElement = this._page.$(step.target);
@@ -41,7 +41,11 @@ class Executer {
       throw new Error("找不到对应元素!");
     }
 
-    const imgDirPath = path.resolve(__dirname, '../images', "20220213-hash1234");
+    let imgDirPath = path.resolve(__dirname, '../images', name);
+    if(!fs.existsSync(imgDirPath)){
+      fs.mkdirSync(imgDirPath);
+    }
+    imgDirPath = path.resolve(__dirname, '../images', name, "时间-hash");
     if(!fs.existsSync(imgDirPath)){
       fs.mkdirSync(imgDirPath);
     }
@@ -73,7 +77,7 @@ class Executer {
     el.hover();
   }
 
-  async executeReal(step) {
+  async executeReal(step, options) {
     switch (step.type) {
       case "open_page":
         await this.openExecute(step);
@@ -82,7 +86,7 @@ class Executer {
         await this.inputExecute(step);
         break;
       case "screenshot":
-        await this.screenshotExecute(step);
+        await this.screenshotExecute(step, options.name);
         break;
       case "click_element":
         await this.clickElementExcute(step);
@@ -102,7 +106,7 @@ class Executer {
 
   async execute() {
     const {
-      steps, clientOptions
+      steps, clientOptions, name
     } = tempJSON;
 
     const browser = await puppeteer.launch({
@@ -116,7 +120,7 @@ class Executer {
     for (let i = 0; i < steps.length; i++) {
       const thisStep = steps[i];
       try {
-        await this.executeReal(thisStep);
+        await this.executeReal(thisStep, tempJSON);
       } catch (err) {
         console.log(err);
         throw new Error(JSON.stringify({step: i, err:err.message}));
