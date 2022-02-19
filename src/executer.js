@@ -80,6 +80,10 @@ class Executer {
     el.hover();
   }
 
+  async exitBrowserExcute(){
+    await this._browser.close();
+  }
+
   async executeReal(step, options) {
     switch (step.type) {
       case "open_page":
@@ -100,11 +104,13 @@ class Executer {
       case "hover_element":
         await this.hoverElementExcute(step);
         break;
+      case "exit":
+        await this.exitBrowserExcute(step);
+        break; 
 
       default:
         break;
     }
-    console.log(step.name, '执行完毕')
   }
 
   async execute() {

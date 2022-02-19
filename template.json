@@ -1,7 +1,7 @@
 {
   "name": "登录测试",
   "clientOptions": {
-    "headless": false,
+    "headless": true,
     "defaultViewport": {
       "width": 1536,
       "height": 721
@@ -46,6 +46,10 @@
     }, {
       "name": "截图-登录后",
       "type": "screenshot",
+      "target": ""
+    }, {
+      "name": "关闭浏览器",
+      "type": "exit",
       "target": ""
     }
   ]
