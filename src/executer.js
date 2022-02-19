@@ -1,7 +1,8 @@
 const tempJSON = require("../template.json");
 const puppeteer = require('puppeteer');
 const path = require("path");
-const fs = require("fs");
+const { getHashcode, mkDeepdirs } = require("./utils/common");
+const moment = require("moment");
 
 class Executer {
 
@@ -13,6 +14,11 @@ class Executer {
    * @type {puppeteer.Page}
    */
   _page;
+
+  /**
+   * @type {String}
+   */
+  _hash;
 
   async openExecute(step) {
     if(!step.href){
@@ -41,14 +47,11 @@ class Executer {
       throw new Error("找不到对应元素!");
     }
 
-    let imgDirPath = path.resolve(__dirname, '../images', name);
-    if(!fs.existsSync(imgDirPath)){
-      fs.mkdirSync(imgDirPath);
-    }
-    imgDirPath = path.resolve(__dirname, '../images', name, "时间-hash");
-    if(!fs.existsSync(imgDirPath)){
-      fs.mkdirSync(imgDirPath);
-    }
+    const dateStr = moment().format("yyyy-MM-DD");
+    const imgDirPath = path.resolve(__dirname, '../images', name, dateStr, this._hash);
+
+    mkDeepdirs(imgDirPath);
+
     await screenElement.screenshot({
       path: path.resolve(imgDirPath, step.name+'.png')
     });
@@ -116,6 +119,7 @@ class Executer {
     const page = await browser.newPage();
     this._browser = browser;
     this._page = page;
+    this._hash = getHashcode()+"";
 
     for (let i = 0; i < steps.length; i++) {
       const thisStep = steps[i];
