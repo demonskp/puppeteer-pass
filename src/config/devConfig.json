@@ -1,0 +1,9 @@
+{
+  "PublicPath":"public",
+  "mysql":{
+      "HOST":"localhost",
+      "USERNAME":"root",
+      "PASSWORD":"information8082.",
+      "DBNAME":"puppeteer"
+  }
+}

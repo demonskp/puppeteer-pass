@@ -7,7 +7,8 @@
       "height": 721
     }
   },
-  "steps": [{
+  "steps": [
+    {
       "name": "打开页面",
       "type": "open_page",
       "href": "https://passport-pbsp-test.myysq.com.cn/auth/login"

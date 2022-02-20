@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node ./src/service.js"
   },
   "author": "",
   "license": "ISC",
@@ -12,6 +13,7 @@
     "cookie-parser": "^1.4.6",
     "express": "^4.17.3",
     "moment": "^2.29.1",
+    "mysql": "^2.18.1",
     "puppeteer": "^13.3.1"
   }
 }

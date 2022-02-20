@@ -1,4 +1,5 @@
 const { Executer } = require('../executer');
+const { tcaseRouter } = require('./tcase');
 
 const routers = [
   {
@@ -28,6 +29,7 @@ const routers = [
       
     },
   },
+  ...tcaseRouter
 ];
 
 /**
