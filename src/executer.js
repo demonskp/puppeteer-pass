@@ -19,6 +19,37 @@ class Executer {
    * @type {String}
    */
   _hash;
+  
+  _case;
+
+  constructor(tcase){
+    this._case = tcase;
+  }
+
+  async execute() {
+    const {
+      steps, clientOptions, name
+    } = this._case;
+
+    const browser = await puppeteer.launch({
+      headless: clientOptions.headless,
+      defaultViewport: clientOptions.defaultViewport
+    })
+    const page = await browser.newPage();
+    this._browser = browser;
+    this._page = page;
+    this._hash = getHashcode()+"";
+
+    for (let i = 0; i < steps.length; i++) {
+      const thisStep = steps[i];
+      try {
+        await this.executeReal(thisStep, tempJSON);
+      } catch (err) {
+        console.log(err);
+        throw new Error(JSON.stringify({step: i, err:err.message}));
+      }
+    }
+  }
 
   async openExecute(step) {
     if(!step.href){
@@ -110,31 +141,6 @@ class Executer {
 
       default:
         break;
-    }
-  }
-
-  async execute() {
-    const {
-      steps, clientOptions, name
-    } = tempJSON;
-
-    const browser = await puppeteer.launch({
-      headless: clientOptions.headless,
-      defaultViewport: clientOptions.defaultViewport
-    })
-    const page = await browser.newPage();
-    this._browser = browser;
-    this._page = page;
-    this._hash = getHashcode()+"";
-
-    for (let i = 0; i < steps.length; i++) {
-      const thisStep = steps[i];
-      try {
-        await this.executeReal(thisStep, tempJSON);
-      } catch (err) {
-        console.log(err);
-        throw new Error(JSON.stringify({step: i, err:err.message}));
-      }
     }
   }
 }

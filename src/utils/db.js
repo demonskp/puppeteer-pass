@@ -77,7 +77,6 @@ class Mysql {
             resolve(results);
           } catch (error) {
             connection.rollback();
-            logger.error(error);
             reject(error);
           }
 
